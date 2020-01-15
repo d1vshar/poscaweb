@@ -14,6 +14,14 @@
     <name>poscaweb</name>
     <description>Demo project for Spring Boot</description>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub l0llygag Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/l0llygag/pw4j</url>
+        </repository>
+    </repositories>
+
     <properties>
         <java.version>13</java.version>
     </properties>
