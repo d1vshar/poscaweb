@@ -19,7 +19,7 @@ public class AllianceNation {
     private Double score;
     private Integer rank;
     private String vacMode;
-    private Integer minutesSinceActive;
+    private String minutesSinceActive;
     private Integer soldiers;
     private Integer soldiersPercentage;
     private Integer tanks;
@@ -49,7 +49,7 @@ public class AllianceNation {
         this.score = sNationContainer.getScore();
         this.rank = sNationContainer.getRank();
         this.vacMode = sNationContainer.getVacmode();
-        this.minutesSinceActive = sNationContainer.getMinutessinceactive();
+        this.minutesSinceActive = sNationContainer.getMinutessinceactive() / 60 + "h " + sNationContainer.getMinutessinceactive() % 60 + "m";
         this.soldiers = nationMilitaryContainer.getSoldiers();
         this.soldiersPercentage = nationMilitaryContainer.getSoldiers() * 100 / (cities * 15000);
         this.tanks = nationMilitaryContainer.getTanks();
@@ -184,11 +184,11 @@ public class AllianceNation {
         this.vacMode = vacMode;
     }
 
-    public Integer getMinutesSinceActive() {
+    public String getMinutesSinceActive() {
         return minutesSinceActive;
     }
 
-    public void setMinutesSinceActive(Integer minutesSinceActive) {
+    public void setMinutesSinceActive(String minutesSinceActive) {
         this.minutesSinceActive = minutesSinceActive;
     }
 

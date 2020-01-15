@@ -1,14 +1,17 @@
 package io.github.l0llygag.poscaweb;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    private String get() {
-        return "";
+
+    @RequestMapping("/")
+    private String get(Model model) {
+        String title = "Home";
+        model.addAttribute("title", title);
+        return "home";
     }
 }

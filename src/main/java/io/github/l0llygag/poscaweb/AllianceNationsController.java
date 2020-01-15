@@ -21,9 +21,11 @@ public class AllianceNationsController {
 
     @Autowired
     PoliticsAndWar politicsAndWar;
+    private String title = "Alliance Nations";
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    private String get() {
+    private String get(Model model) {
+        model.addAttribute("title", title);
         return "aa-nations";
     }
 
@@ -46,17 +48,20 @@ public class AllianceNationsController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        model.addAttribute("title", title);
         model.addAttribute("nations", nations);
         return "aa-nations";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    private String redirectFromHome(@RequestParam("id") int id) {
+    private String redirectFromHome(@RequestParam("id") int id, Model model) {
+        model.addAttribute("title", title);
         return "redirect:/aa-nations/" + id;
     }
 
     @RequestMapping(value = "/**", method = RequestMethod.POST)
-    private String redirect(@RequestParam("id") int id) {
+    private String redirect(@RequestParam("id") int id, Model model) {
+        model.addAttribute("title", title);
         return "redirect:/aa-nations/" + id;
     }
 

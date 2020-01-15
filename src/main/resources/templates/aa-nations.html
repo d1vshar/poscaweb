@@ -1,101 +1,91 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-    <!-- Compiled and minified CSS -->
-    <link crossorigin="anonymous"
-          href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
-          integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!-- Compiled and minified JavaScript -->
-</head>
+<div th:replace="base :: head (${title})"></div>
 <body>
-
-<header>
-    <nav class="navbar navbar-dark bg-dark">
-        <span class="navbar-brand mb-0 h1">poscaWeb</span>
-    </nav>
-</header>
+<div th:replace="base :: nav"></div>
 <main>
-    <div class="row">
-        <div class="col-md-4 offset-md-4">
-            <form class="form-control" method="post">
-                <div class="input-group mb-3">
-                    <input aria-describedby="go" aria-label="Alliance ID" class="form-control" id="id" name="id"
-                           placeholder="Alliance ID"
-                           type="number">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-primary" id="go" type="submit">Go</button>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <form class="m-2" method="post">
+                    <div class="input-group mb-3">
+                        <input aria-describedby="go" aria-label="Alliance ID" class="form-control" id="id" name="id"
+                               placeholder="Alliance ID"
+                               type="number">
+                        <div class="input-group-append">
+                            <button class="btn btn-dark btn-raised" id="load" type="submit">Load</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
-    <div class="row>">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th scope="col" style="width: 2%">#</th>
-                        <th scope="col" style="width: 3%">ID</th>
-                        <th scope="col" style="width: 12%;">Nation Name</th>
-                        <th scope="col" style="width: 12%">Leader Name</th>
-                        <th scope="col" style="width: 5%">Score</th>
-                        <th scope="col" style="width: 2%">Cities</th>
-                        <th scope="col" style="width: 3%">Last Active</th>
-                        <th scope="col" style="width: 2%">D Wars</th>
-                        <th scope="col" style="width: 2%">O Wars</th>
-                        <th scope="col" style="width: 5%">Soldiers</th>
-                        <th scope="col" style="width: 3%">Soldiers %</th>
-                        <th scope="col" style="width: 5%">Tanks</th>
-                        <th scope="col" style="width: 3%">Tanks %</th>
-                        <th scope="col" style="width: 3%">Planes</th>
-                        <th scope="col" style="width: 3%">Planes %</th>
-                        <th scope="col" style="width: 3%">Ships</th>
-                        <th scope="col" style="width: 3%">Ships %</th>
-                        <th scope="col" style="width: 3%">M</th>
-                        <th scope="col" style="width: 3%">N</th>
-                        <th scope="col" style="width: 7%">O Range</th>
-                        <th scope="col" style="width: 7%">D Range</th>
-                        <th scope="col" style="width: 3%">War Policy</th>
-                        <th scope="col" style="width: 3%">Color</th>
-                        <th scope="col" style="width: 2%">VM</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!--/*@thymesVar id="nation" type="io.github.l0llygag.poscaweb.AllianceNation"*/-->
-                    <tr th:each="nation,iterator : ${nations}">
-                        <th scope="row" th:text="${iterator.index}"></th>
-                        <td th:text="${nation.getNationId()}"></td>
-                        <td th:text="${nation.getNation()}"></td>
-                        <td th:text="${nation.getLeader()}"></td>
-                        <td th:text="${nation.getScore()}"></td>
-                        <td th:text="${nation.getCities()}"></td>
-                        <td th:text="${nation.getMinutesSinceActive()}"></td>
-                        <td th:text="${nation.getdWars()}"></td>
-                        <td th:text="${nation.getoWars()}"></td>
-                        <td th:text="${nation.getSoldiers()}"></td>
-                        <td th:text="${nation.getSoldiersPercentage()}"></td>
-                        <td th:text="${nation.getTanks()}"></td>
-                        <td th:text="${nation.getTanksPercentage()}"></td>
-                        <td th:text="${nation.getAircraft()}"></td>
-                        <td th:text="${nation.getAircraftPercentage()}"></td>
-                        <td th:text="${nation.getShips()}"></td>
-                        <td th:text="${nation.getShipsPercentage()}"></td>
-                        <td th:text="${nation.getMissiles()}"></td>
-                        <td th:text="${nation.getNukes()}"></td>
-                        <td th:text="${nation.getoRange()}"></td>
-                        <td th:text="${nation.getdRange()}"></td>
-                        <td th:text="${nation.getWarPolicy()}"></td>
-                        <td th:text="${nation.getColor()}"></td>
-                        <td th:text="${nation.getVacMode()}"></td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div class="row>">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" style="width: 2%">#</th>
+                            <th scope="col" style="width: 3%">ID</th>
+                            <th scope="col" style="width: 12%;">Nation Name</th>
+                            <th scope="col" style="width: 12%">Leader Name</th>
+                            <th scope="col" style="width: 5%">Score</th>
+                            <th scope="col" style="width: 2%">Cities</th>
+                            <th scope="col" style="width: 2%">D Wars</th>
+                            <th scope="col" style="width: 2%">O Wars</th>
+                            <th scope="col" style="width: 5%">Soldiers</th>
+                            <th scope="col" style="width: 3%">Soldiers %</th>
+                            <th scope="col" style="width: 5%">Tanks</th>
+                            <th scope="col" style="width: 3%">Tanks %</th>
+                            <th scope="col" style="width: 3%">Planes</th>
+                            <th scope="col" style="width: 3%">Planes %</th>
+                            <th scope="col" style="width: 3%">Ships</th>
+                            <th scope="col" style="width: 3%">Ships %</th>
+                            <th scope="col" style="width: 3%">M</th>
+                            <th scope="col" style="width: 3%">N</th>
+                            <th scope="col" style="width: 7%">O Range</th>
+                            <th scope="col" style="width: 7%">D Range</th>
+                            <th scope="col" style="width: 3%">War Policy</th>
+                            <th scope="col" style="width: 3%">Color</th>
+                            <th scope="col" style="width: 2%">VM</th>
+                            <th scope="col" style="width: 3%">Last Active</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--/*@thymesVar id="nation" type="io.github.l0llygag.poscaweb.AllianceNation"*/-->
+                        <tr th:each="nation,iterator : ${nations}">
+                            <th scope="row" th:text="${iterator.index + 1}"></th>
+                            <td th:text="${nation.getNationId()}"></td>
+                            <td>
+                                <a target="_blank"
+                                   th:href="${#strings.concat('https://politicsandwar.com/nation/id=',nation.getNationId())}"
+                                   th:text="${nation.getNation()}"></a>
+                            </td>
+                            <td th:text="${nation.getLeader()}"></td>
+                            <td th:text="${nation.getScore()}"></td>
+                            <td th:text="${nation.getCities()}"></td>
+                            <td th:text="${nation.getdWars()}"></td>
+                            <td th:text="${nation.getoWars()}"></td>
+                            <td class="soldiers" th:text="${nation.getSoldiers()}"></td>
+                            <td th:text="${nation.getSoldiersPercentage()}"></td>
+                            <td class="tanks" th:text="${nation.getTanks()}"></td>
+                            <td th:text="${nation.getTanksPercentage()}"></td>
+                            <td class="planes" th:text="${nation.getAircraft()}"></td>
+                            <td th:text="${nation.getAircraftPercentage()}"></td>
+                            <td class="ships" th:text="${nation.getShips()}"></td>
+                            <td th:text="${nation.getShipsPercentage()}"></td>
+                            <td th:text="${nation.getMissiles()}"></td>
+                            <td th:text="${nation.getNukes()}"></td>
+                            <td th:text="${nation.getoRange()}"></td>
+                            <td th:text="${nation.getdRange()}"></td>
+                            <td th:text="${nation.getWarPolicy()}"></td>
+                            <td th:classappend="${nation.getColor()}" th:text="${nation.getColor()}"></td>
+                            <td th:text="${nation.getVacMode()}"></td>
+                            <td th:text="${nation.getMinutesSinceActive()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
