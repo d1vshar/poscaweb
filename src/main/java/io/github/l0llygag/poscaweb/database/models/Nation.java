@@ -1,24 +1,28 @@
-package io.github.l0llygag.poscaweb;
+package io.github.l0llygag.poscaweb.database.models;
 
-import io.github.adorableskullmaster.pw4j.domains.subdomains.NationMilitaryContainer;
-import io.github.adorableskullmaster.pw4j.domains.subdomains.SNationContainer;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class AllianceNation {
+@Document(collection = "nations")
+public class Nation {
+    @Id
     private Integer nationId;
     private String nation;
     private String leader;
     private String continent;
     private String warPolicy;
     private String color;
+    private String beigeLeft;
     private String alliance;
     private Integer allianceId;
     private Integer alliancePosition;
     private Integer cities;
-    private Integer oWars;
-    private Integer dWars;
+    private Integer offensiveWars;
+    private Integer defensiveWars;
     private Double score;
     private Integer rank;
-    private String vacMode;
+    private Integer vacMode;
+    private Double infrastructure;
     private String minutesSinceActive;
     private Integer soldiers;
     private Integer soldiersPercentage;
@@ -30,38 +34,26 @@ public class AllianceNation {
     private Integer shipsPercentage;
     private Integer missiles;
     private Integer nukes;
-    private String oRange;
-    private String dRange;
+    private Double money;
+    private Double coal;
+    private Double oil;
+    private Double uranium;
+    private Double lead;
+    private Double iron;
+    private Double bauxite;
+    private Double gasoline;
+    private Double munitions;
+    private Double steel;
+    private Double aluminum;
+    private Double food;
+    private Double lootValue;
 
-    AllianceNation(SNationContainer sNationContainer, NationMilitaryContainer nationMilitaryContainer) {
-        this.nationId = sNationContainer.getNationId();
-        this.nation = sNationContainer.getNation();
-        this.leader = sNationContainer.getLeader();
-        this.continent = sNationContainer.getContinent();
-        this.warPolicy = sNationContainer.getWarPolicy();
-        this.color = sNationContainer.getColor();
-        this.alliance = sNationContainer.getAlliance();
-        this.allianceId = sNationContainer.getAllianceid();
-        this.alliancePosition = sNationContainer.getAllianceposition();
-        this.cities = sNationContainer.getCities();
-        this.oWars = sNationContainer.getOffensivewars();
-        this.dWars = sNationContainer.getDefensivewars();
-        this.score = sNationContainer.getScore();
-        this.rank = sNationContainer.getRank();
-        this.vacMode = sNationContainer.getVacmode();
-        this.minutesSinceActive = sNationContainer.getMinutessinceactive() / 60 + "h " + sNationContainer.getMinutessinceactive() % 60 + "m";
-        this.soldiers = nationMilitaryContainer.getSoldiers();
-        this.soldiersPercentage = nationMilitaryContainer.getSoldiers() * 100 / (cities * 15000);
-        this.tanks = nationMilitaryContainer.getTanks();
-        this.tanksPercentage = nationMilitaryContainer.getTanks() * 100 / (cities * 1250);
-        this.aircraft = nationMilitaryContainer.getAircraft();
-        this.aircraftPercentage = nationMilitaryContainer.getAircraft() * 100 / (cities * 90);
-        this.ships = nationMilitaryContainer.getShips();
-        this.shipsPercentage = nationMilitaryContainer.getShips() * 100 / (cities * 15);
-        this.missiles = nationMilitaryContainer.getMissiles();
-        this.nukes = nationMilitaryContainer.getNukes();
-        this.oRange = String.format("%.1f - %.1f", score * 0.75, score * 1.75);
-        this.dRange = String.format("%.1f - %.1f", score * 0.5714, score * 1.3333);
+    public Double getLootValue() {
+        return lootValue;
+    }
+
+    public void setLootValue(Double lootValue) {
+        this.lootValue = lootValue;
     }
 
     public Integer getNationId() {
@@ -144,20 +136,20 @@ public class AllianceNation {
         this.cities = cities;
     }
 
-    public Integer getoWars() {
-        return oWars;
+    public Integer getOffensiveWars() {
+        return offensiveWars;
     }
 
-    public void setoWars(Integer oWars) {
-        this.oWars = oWars;
+    public void setOffensiveWars(Integer offensiveWars) {
+        this.offensiveWars = offensiveWars;
     }
 
-    public Integer getdWars() {
-        return dWars;
+    public Integer getDefensiveWars() {
+        return defensiveWars;
     }
 
-    public void setdWars(Integer dWars) {
-        this.dWars = dWars;
+    public void setDefensiveWars(Integer defensiveWars) {
+        this.defensiveWars = defensiveWars;
     }
 
     public Double getScore() {
@@ -176,11 +168,11 @@ public class AllianceNation {
         this.rank = rank;
     }
 
-    public String getVacMode() {
+    public Integer getVacMode() {
         return vacMode;
     }
 
-    public void setVacMode(String vacMode) {
+    public void setVacMode(Integer vacMode) {
         this.vacMode = vacMode;
     }
 
@@ -272,19 +264,115 @@ public class AllianceNation {
         this.nukes = nukes;
     }
 
-    public String getoRange() {
-        return oRange;
+    public Double getMoney() {
+        return money;
     }
 
-    public void setoRange(String oRange) {
-        this.oRange = oRange;
+    public void setMoney(Double money) {
+        this.money = money;
     }
 
-    public String getdRange() {
-        return dRange;
+    public Double getCoal() {
+        return coal;
     }
 
-    public void setdRange(String dRange) {
-        this.dRange = dRange;
+    public void setCoal(Double coal) {
+        this.coal = coal;
+    }
+
+    public Double getOil() {
+        return oil;
+    }
+
+    public void setOil(Double oil) {
+        this.oil = oil;
+    }
+
+    public Double getUranium() {
+        return uranium;
+    }
+
+    public void setUranium(Double uranium) {
+        this.uranium = uranium;
+    }
+
+    public Double getLead() {
+        return lead;
+    }
+
+    public void setLead(Double lead) {
+        this.lead = lead;
+    }
+
+    public Double getIron() {
+        return iron;
+    }
+
+    public void setIron(Double iron) {
+        this.iron = iron;
+    }
+
+    public Double getBauxite() {
+        return bauxite;
+    }
+
+    public void setBauxite(Double bauxite) {
+        this.bauxite = bauxite;
+    }
+
+    public Double getGasoline() {
+        return gasoline;
+    }
+
+    public void setGasoline(Double gasoline) {
+        this.gasoline = gasoline;
+    }
+
+    public Double getMunitions() {
+        return munitions;
+    }
+
+    public void setMunitions(Double munitions) {
+        this.munitions = munitions;
+    }
+
+    public Double getSteel() {
+        return steel;
+    }
+
+    public void setSteel(Double steel) {
+        this.steel = steel;
+    }
+
+    public Double getAluminum() {
+        return aluminum;
+    }
+
+    public void setAluminum(Double aluminum) {
+        this.aluminum = aluminum;
+    }
+
+    public Double getFood() {
+        return food;
+    }
+
+    public void setFood(Double food) {
+        this.food = food;
+    }
+
+    public Double getInfrastructure() {
+        return infrastructure;
+    }
+
+    public void setInfrastructure(Double infrastructure) {
+        this.infrastructure = infrastructure;
+    }
+
+    public String getBeigeLeft() {
+        return beigeLeft;
+    }
+
+    public void setBeigeLeft(String beigeLeft) {
+        this.beigeLeft = beigeLeft;
     }
 }

@@ -1,4 +1,4 @@
-package io.github.l0llygag.poscaweb;
+package io.github.l0llygag.poscaweb.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +12,6 @@ public class HomeController {
     private String get(Model model) {
         String title = "Home";
         model.addAttribute("title", title);
-        return "home";
+        return "Home";
     }
 }

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="base :: head (${title})"></div>
+<body>
+<div th:replace="base :: nav"></div>
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 offset-md-12">
+                <form class="m-2" method="get">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="scoreInput">Nation Score</label>
+                            <input class="form-control" id="scoreInput" max="999999" name="score"
+                                   placeholder="Your nation score" type="number">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputAlliance">Alliance Filter</label>
+                            <input class="form-control" id="inputAlliance" max="99999" name="allianceId"
+                                   placeholder="Alliance ID" type="number">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <div class="custom-control custom-switch">
+                                <input class="custom-control-input" id="beigeSwitch" name="includeBeige"
+                                       type="checkbox">
+                                <label class="custom-control-label" for="beigeSwitch">Include Beige Nations?</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="custom-control custom-switch">
+                                <input class="custom-control-input" id="vmSwitch" name="includeVM" type="checkbox">
+                                <label class="custom-control-label" for="vmSwitch">Include VM Nations?</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <div class="custom-control custom-switch">
+                                <input class="custom-control-input" id="slotSwitch" name="includeSlotted"
+                                       type="checkbox">
+                                <label class="custom-control-label" for="slotSwitch">Include Slotted Nations?</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <button class="btn btn-dark btn-block btn-raised" id="load" type="submit">Find</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row>">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered" id="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" style="width: 2%">#</th>
+                            <th scope="col" style="width: 3%">ID</th>
+                            <th scope="col" style="width: 15%;">Nation Name</th>
+                            <th scope="col" style="width: 15%">Leader Name</th>
+                            <th scope="col" style="width: 15%">Alliance</th>
+                            <th scope="col" style="width: 5%">Score</th>
+                            <th scope="col" style="width: 2%">Cities</th>
+                            <th scope="col" style="width: 2%">D Wars</th>
+                            <th scope="col" style="width: 4%">Soldiers</th>
+                            <th scope="col" style="width: 4%">Tanks</th>
+                            <th scope="col" style="width: 3%">Planes</th>
+                            <th scope="col" style="width: 3%">Ships</th>
+                            <th scope="col" style="width: 3%">Color</th>
+                            <th scope="col" style="width: 3%">VM</th>
+                            <th scope="col" style="width: 7%">Last Active</th>
+                            <th scope="col" style="width: 15%">Expected Loot</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--/*@thymesVar id="nation" type="io.github.l0llygag.poscaweb.database.models.Nation"*/-->
+                        <tr th:each="nation,iterator : ${nations}">
+                            <th scope="row" th:text="${iterator.index + 1}"></th>
+                            <td th:text="${nation.getNationId()}"></td>
+                            <td>
+                                <a target="_blank"
+                                   th:href="${'https://politicsandwar.com/nation/id=' + nation.getNationId()}"
+                                   th:text="${nation.getNation()}"></a>
+                            </td>
+                            <td th:text="${nation.getLeader()}"></td>
+                            <td th:text="${nation.getAlliance()}"></td>
+                            <td th:text="${nation.getScore()}"></td>
+                            <td th:text="${nation.getCities()}"></td>
+                            <td th:text="${nation.getDefensiveWars()}"></td>
+                            <td class="soldiers" th:text="${nation.getSoldiers()}"></td>
+                            <td class="tanks" th:text="${nation.getTanks()}"></td>
+                            <td class="planes" th:text="${nation.getAircraft()}"></td>
+                            <td class="ships" th:text="${nation.getShips()}"></td>
+                            <td th:classappend="${nation.getColor()}" th:text="${nation.getColor()}"></td>
+                            <td th:text="${nation.getVacMode()}"></td>
+                            <td th:text="${nation.getMinutesSinceActive()}"></td>
+                            <td th:text="${#numbers.formatCurrency(nation.getLootValue())}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:replace="base :: scripts"></div>
+</body>
+</html>

@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-4 offset-md-4">
-                <form class="m-2" method="post">
+                <form class="m-2" method="get">
                     <div class="input-group mb-3">
                         <input aria-describedby="go" aria-label="Alliance ID" class="form-control" id="id" name="id"
                                placeholder="Alliance ID"
@@ -22,7 +22,7 @@
         <div class="row>">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-sm table-bordered" id="table">
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col" style="width: 2%">#</th>
@@ -34,13 +34,13 @@
                             <th scope="col" style="width: 2%">D Wars</th>
                             <th scope="col" style="width: 2%">O Wars</th>
                             <th scope="col" style="width: 5%">Soldiers</th>
-                            <th scope="col" style="width: 3%">Soldiers %</th>
+                            <th scope="col" style="width: 3%">%</th>
                             <th scope="col" style="width: 5%">Tanks</th>
-                            <th scope="col" style="width: 3%">Tanks %</th>
+                            <th scope="col" style="width: 3%">%</th>
                             <th scope="col" style="width: 3%">Planes</th>
-                            <th scope="col" style="width: 3%">Planes %</th>
+                            <th scope="col" style="width: 3%">%</th>
                             <th scope="col" style="width: 3%">Ships</th>
-                            <th scope="col" style="width: 3%">Ships %</th>
+                            <th scope="col" style="width: 3%">%</th>
                             <th scope="col" style="width: 3%">M</th>
                             <th scope="col" style="width: 3%">N</th>
                             <th scope="col" style="width: 7%">O Range</th>
@@ -52,7 +52,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!--/*@thymesVar id="nation" type="io.github.l0llygag.poscaweb.AllianceNation"*/-->
+                        <!--/*@thymesVar id="nation" type="io.github.l0llygag.poscaweb.database.models.Nation"*/-->
                         <tr th:each="nation,iterator : ${nations}">
                             <th scope="row" th:text="${iterator.index + 1}"></th>
                             <td th:text="${nation.getNationId()}"></td>
@@ -64,20 +64,21 @@
                             <td th:text="${nation.getLeader()}"></td>
                             <td th:text="${nation.getScore()}"></td>
                             <td th:text="${nation.getCities()}"></td>
-                            <td th:text="${nation.getdWars()}"></td>
-                            <td th:text="${nation.getoWars()}"></td>
+                            <td th:text="${nation.getDefensiveWars()}"></td>
+                            <td th:text="${nation.getOffensiveWars()}"></td>
                             <td class="soldiers" th:text="${nation.getSoldiers()}"></td>
-                            <td th:text="${nation.getSoldiersPercentage()}"></td>
+                            <td class="soldiers" th:text="${nation.getSoldiersPercentage()}"></td>
                             <td class="tanks" th:text="${nation.getTanks()}"></td>
-                            <td th:text="${nation.getTanksPercentage()}"></td>
+                            <td class="tanks" th:text="${nation.getTanksPercentage()}"></td>
                             <td class="planes" th:text="${nation.getAircraft()}"></td>
-                            <td th:text="${nation.getAircraftPercentage()}"></td>
+                            <td class="planes" th:text="${nation.getAircraftPercentage()}"></td>
                             <td class="ships" th:text="${nation.getShips()}"></td>
-                            <td th:text="${nation.getShipsPercentage()}"></td>
+                            <td class="ships" th:text="${nation.getShipsPercentage()}"></td>
                             <td th:text="${nation.getMissiles()}"></td>
                             <td th:text="${nation.getNukes()}"></td>
-                            <td th:text="${nation.getoRange()}"></td>
-                            <td th:text="${nation.getdRange()}"></td>
+                            <td th:text="${#strings.concat(#numbers.formatDecimal(nation.getScore() * 0.7500,2,2),' - ',#numbers.formatDecimal(nation.getScore() * 1.7500,2,2))}"></td>
+                            <!-- TODO change range -->
+                            <td th:text="${#strings.concat(#numbers.formatDecimal(nation.getScore() * 0.5713,2,2),' - ',#numbers.formatDecimal(nation.getScore() * 1.3333,2,2))}"></td>
                             <td th:text="${nation.getWarPolicy()}"></td>
                             <td th:classappend="${nation.getColor()}" th:text="${nation.getColor()}"></td>
                             <td th:text="${nation.getVacMode()}"></td>
@@ -90,17 +91,6 @@
         </div>
     </div>
 </main>
-<script crossorigin="anonymous"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script crossorigin="anonymous"
-        integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
-        src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"></script>
-<script crossorigin="anonymous"
-        integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
-        src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
-<script>$(document).ready(function () {
-    $('body').bootstrapMaterialDesign();
-});</script>
+<div th:replace="base :: scripts"></div>
 </body>
 </html>

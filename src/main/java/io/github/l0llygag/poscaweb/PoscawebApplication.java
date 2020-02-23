@@ -5,8 +5,10 @@ import io.github.adorableskullmaster.pw4j.PoliticsAndWarBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class PoscawebApplication {
 
     public static void main(String[] args) {
@@ -15,6 +17,7 @@ public class PoscawebApplication {
 
     @Bean
     public PoliticsAndWar getPoliticsAndWar() {
-        return new PoliticsAndWarBuilder().setApiKey("4216612b725b2b").setEnableCache(false).build();
+        String[] api_keys = System.getenv("API_KEY").split(",");
+        return new PoliticsAndWarBuilder().addApiKeys(api_keys).setEnableCache(false).build();
     }
 }
