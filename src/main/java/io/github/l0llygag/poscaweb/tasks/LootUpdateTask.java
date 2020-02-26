@@ -17,63 +17,46 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 /*
-    Database will store only top 5000 active nations above 500 score
-    Every 15 min:
-    Nations API : 1 call
-    Nation-Military API : 1 call
-    Wars API : 1 call
-    war-attacks API : can vary. generally 10 - 100 calls
+  Database will store only top 5000 active nations above 500 score
+  Every 15 min:
+  Nations API : 1 call
+  Nation-Military API : 1 call
+  Wars API : 1 call
+  war-attacks API : can vary. generally 10 - 100 calls
 
-    For beige days left:
-    Simple  way : Nation API : 5 - 60? calls every time you use aa-nations
-    Harder way : Nations API v2 : 1 call every 15 min.
- */
+  For beige days left:
+  Simple  way : Nation API : 5 - 60? calls every time you use aa-nations
+  Harder way : Nations API v2 : 1 call every 15 min.
 
+  L0 = original loot (10% of stockpile)
+  L = actual loot
+  WT = war type modifier
+  WPW = winner war policy
+  WPL = loser war policy
 
-    /*nation.setCoal();
-            nation.setOil();
-            nation.setUranium();
-            nation.setIron();
-            nation.setBauxite();
-            nation.setLead();
-            nation.setGasoline();
-            nation.setMunitions();
-            nation.setSteel();
-            nation.setAluminum();
-            nation.setFood();*/
+  L0 = (L / (1 + WPW + WPL)) / WT
 
-    /*
-        L0 = original loot (10% of stockpile)
-        L = actual loot
-        WT = war type modifier
-        WPW = winner war policy
-        WPL = loser war policy
+  WPW    WPL
+  att    -0.2    0
+  tur    0    0.2
+  mon    0    -0.4
+  pir    0.4    0
+  gua    0    0.2
 
-        L0 = (L / (1 + WPW + WPL)) / WT
-
-        WPW    WPL
-        att    -0.2    0
-        tur    0    0.2
-        mon    0    -0.4
-        pir    0.4    0
-        gua    0    0.2
-
-        policy
-        0 -> attrition
-        1 -> turtle
-        2 -> moneybags
-        3 -> pirate
-        4 -> guardian
-     */
+  policy
+  0 -> attrition
+  1 -> turtle
+  2 -> moneybags
+  3 -> pirate
+  4 -> guardian
+*/
 
 @Component
 public class LootUpdateTask {
@@ -82,6 +65,7 @@ public class LootUpdateTask {
     private final LogRepository logRepository;
     private final PoliticsAndWar politicsAndWar;
     private final HashMap<Integer, HashMap<String, Double>> changedLootValues = new HashMap<>();
+    private final Queue<Nation> saveQueue = new ArrayDeque<>();
     private final String[] rss = {"Coal", "Oil", "Uranium", "Iron", "Bauxite", "Lead", "Gasoline", "Munitions", "Steel", "Aluminum", "Food"};
     private final HashMap<String, Double> rssPrice = new HashMap<>();
     private final Logger logger = LoggerFactory.getLogger(LootUpdateTask.class);
@@ -98,15 +82,13 @@ public class LootUpdateTask {
 
         Optional<Log> last = logRepository.findFirstByTypeOrderByInstantDesc("SER-UPDATE-LUT");
 
-        int amount = 5000;
-        if (last.isPresent()) {
-            amount = 3000;
-            if (Instant.now().toEpochMilli() - last.get().getInstant().toEpochMilli() < 86400000L)
-                return;
-        }
-
-
         logger.info("LootUpdateTracker update started");
+
+        int amount = 5000;
+        if (last.isPresent() && Instant.now().toEpochMilli() - last.get().getInstant().toEpochMilli() < 43200000L)
+            amount = 3000;
+
+        logger.info("LootUpdateTracker amount being fetched: {} ", amount);
 
         initializePrices();
 
@@ -137,7 +119,7 @@ public class LootUpdateTask {
                                                 getWarPolicy(war.getAttackerID()),
                                                 getWarType(war.getWarType())
                                         ));
-                                save(war.getAttackerID());
+                                addToSaveQueue(war.getAttackerID());
                                 c.getAndIncrement();
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -162,7 +144,7 @@ public class LootUpdateTask {
                                                 getWarPolicy(war.getAttackerID()),
                                                 getWarType(war.getWarType())
                                         ));
-                                save(war.getDefenderID());
+                                addToSaveQueue(war.getDefenderID());
                                 c.getAndIncrement();
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -171,11 +153,16 @@ public class LootUpdateTask {
             }
             i++;
         }
+        executeSave();
         logger.info("MilitaryUpdateTask update finished");
-        logRepository.save(new Log("SER-UPDATE-LUT", c.get() + " wars updated.", Instant.now()));
+        logRepository.save(new Log("SER-UPDATE-LUT", saveQueue.size() + " wars updated.", Instant.now()));
     }
 
-    private void save(int id) {
+    private void executeSave() {
+        nationRepository.saveAll(saveQueue);
+    }
+
+    private void addToSaveQueue(int id) {
         nationRepository.findById(id).ifPresent(nation -> {
             nation.setCoal(changedLootValues.get(id).get(rss[0]));
             nation.setOil(changedLootValues.get(id).get(rss[1]));
@@ -190,7 +177,7 @@ public class LootUpdateTask {
             nation.setFood(changedLootValues.get(id).get(rss[10]));
             nation.setMoney(changedLootValues.get(id).get("Money"));
             nation.setLootValue(getWorth(changedLootValues.get(id)));
-            nationRepository.save(nation);
+            saveQueue.add(nation);
         });
     }
 

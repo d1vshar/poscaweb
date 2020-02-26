@@ -15,6 +15,9 @@ public class Log {
     private String details;
     private Instant instant;
 
+    public Log() {
+    }
+
     public Log(ObjectId objectId, String type, String details, Instant instant) {
         this.objectId = objectId;
         this.type = type;
