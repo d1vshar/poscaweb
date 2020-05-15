@@ -35,7 +35,7 @@ public class Utilities {
         nation.setTanks(nationMilitaryContainer.getTanks());
         nation.setTanksPercentage(nationMilitaryContainer.getTanks() * 100 / (sNationContainer.getCities() * 1250));
         nation.setAircraft(nationMilitaryContainer.getAircraft());
-        nation.setAircraftPercentage(nationMilitaryContainer.getAircraft() * 100 / (sNationContainer.getCities() * 90));
+        nation.setAircraftPercentage(nationMilitaryContainer.getAircraft() * 100 / (sNationContainer.getCities() * 75));
         nation.setShips(nationMilitaryContainer.getShips());
         nation.setShipsPercentage(nationMilitaryContainer.getShips() * 100 / (sNationContainer.getCities() * 15));
         nation.setMissiles(nationMilitaryContainer.getMissiles());
